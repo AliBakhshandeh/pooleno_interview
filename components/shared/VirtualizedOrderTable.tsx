@@ -73,58 +73,65 @@ const VirtualizedOrderTable = ({
   return (
     <div className="flex-1 p-4 bg-gray-800 shadow-lg rounded-md">
       <h2 className={`text-xl font-bold mb-4 ${titleColor}`}>{title}</h2>
-      <div
-        className="overflow-auto"
-        style={{ height: containerHeight }}
-        onScroll={handleScroll}
-      >
-        <div style={{ height: totalHeight, position: "relative" }}>
-          <div
-            style={{
-              transform: `translateY(${visibleStart * itemHeight}px)`,
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-            }}
-          >
-            <table className="w-full table-auto border-collapse relative">
-              <thead className="sticky top-0 bg-gray-800 z-10">
-                <tr>
-                  <th className="px-3 py-1 text-left text-sm font-semibold">
-                    Price
-                  </th>
-                  <th className="px-3 py-1 text-right text-sm font-semibold">
-                    Amount
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {visibleData.map(([price, amount], index) => {
-                  const pct = maxAmount
-                    ? (parseFloat(amount) / maxAmount) * 100
-                    : 0;
-                  return (
-                    <tr
-                      key={`${price}-${amount}-${visibleStart + index}`}
-                      className="h-8"
-                      style={{ height: itemHeight }}
-                    >
-                      <td colSpan={2} className="p-0 relative">
-                        <div
-                          className={`${progressColor} opacity-30 absolute top-0 left-0 h-full`}
-                          style={{ width: `${pct}%` }}
-                        />
-                        <div className="flex justify-between px-3 py-1 relative">
-                          <span>{price}</span>
-                          <span>{amount}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+      <div className="relative">
+        <div className="sticky top-0 bg-gray-800 z-10 border-b border-gray-700">
+          <table className="w-full table-auto border-collapse">
+            <thead>
+              <tr>
+                <th className="px-3 py-1 text-left text-sm font-semibold">
+                  Price
+                </th>
+                <th className="px-3 py-1 text-right text-sm font-semibold">
+                  Amount
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+        <div
+          className="overflow-auto"
+          style={{ height: containerHeight - 32 }}
+          onScroll={handleScroll}
+        >
+          <div style={{ height: totalHeight, position: "relative" }}>
+            <div
+              style={{
+                transform: `translateY(${visibleStart * itemHeight}px)`,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+              }}
+            >
+              <table className="w-full table-auto border-collapse">
+                <tbody>
+                  {visibleData.map(([price, amount], index) => {
+                    const pct = maxAmount
+                      ? (parseFloat(amount) / maxAmount) * 100
+                      : 0;
+                    return (
+                      <tr
+                        key={`${price}-${amount}-${visibleStart + index}`}
+                        className="h-8"
+                        style={{ height: itemHeight }}
+                      >
+                        <td colSpan={2} className="p-0 relative">
+                          <div
+                            className={`${progressColor} opacity-30 absolute top-0 left-0 h-full`}
+                            style={{ width: `${pct}%` }}
+                          />
+                          <div className="flex justify-between px-3 py-1 relative">
+                            <span>{price}</span>
+                            <span>{amount}</span>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
